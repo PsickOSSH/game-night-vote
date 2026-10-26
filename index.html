@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vote – Game nights</title>
+<style>
+:root{--bg:#f6f5f2;--card:#fff;--line:#e3e0d9;--txt:#1d1d1b;--mut:#6f6c64;--acc:#1f3a5f;--accH:#18304f;--y:#2f7d4f;--m:#b7791f;--n:#a3342f;--bd:#cfcbc2;--hov:#f1efea;--trk:#ebe8e1}
+:root[data-theme=dark]{--bg:#14161a;--card:#1b1e24;--line:#2b2f38;--txt:#e6e4de;--mut:#98958c;--acc:#6f95c9;--accH:#86a8d6;--y:#3e9a64;--m:#c88a2b;--n:#c2504a;--bd:#3a3f4a;--hov:#252932;--trk:#2b2f38;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);font:15px/1.5 -apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.top{background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+.top>div{max-width:880px;margin:auto;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.brand{font-weight:650;font-size:17px;letter-spacing:-.01em}
+.tabs{display:flex;align-items:center;gap:6px}
+.tabs .t{background:none;border:0;border-bottom:2px solid transparent;padding:6px 2px;margin-right:14px;font:inherit;color:var(--mut);cursor:pointer}
+.tabs .t.on{color:var(--txt);border-color:var(--acc);font-weight:600}
+.mini{font:inherit;font-size:13px;background:none;color:var(--txt);border:1px solid var(--bd);border-radius:4px;padding:4px 9px;cursor:pointer}
+.mini:hover{background:var(--hov)}
+main{max-width:880px;margin:0 auto;padding:24px 16px 90px}
+h1{font-size:24px;margin:0 0 4px;letter-spacing:-.015em}
+h2{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--mut);margin:32px 0 8px;font-weight:600}
+.lead{color:var(--mut);margin:0 0 20px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:16px;margin-bottom:16px}
+label{display:block;font-weight:600;margin-bottom:6px}
+input,textarea{width:100%;font:inherit;color:var(--txt);background:var(--bg);border:1px solid var(--bd);border-radius:4px;padding:8px 10px}
+input:focus,textarea:focus{outline:2px solid var(--acc);outline-offset:-1px}
+textarea{min-height:100px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px}
+.hint{color:var(--mut);font-size:13px;margin:4px 0 0}
+.err{color:var(--n);font-size:13px;margin:8px 0 0}
+.list{background:var(--card);border:1px solid var(--line);border-radius:6px}
+.g{display:flex;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.g:last-child{border:0}
+.g .i{flex:1 1 260px;min-width:0}.g b{font-weight:600}.g small{display:block;color:var(--mut);font-size:13px}
+.seg{display:flex;border:1px solid var(--bd);border-radius:4px;overflow:hidden}
+.seg button{font:inherit;font-size:13px;background:var(--card);color:var(--mut);border:0;border-right:1px solid var(--bd);padding:6px 12px;cursor:pointer}
+.seg button:last-child{border:0}.seg button:hover{background:var(--hov)}
+.seg .a0.on{background:var(--y);color:#fff}.seg .a1.on{background:var(--m);color:#fff}.seg .a2.on{background:var(--n);color:#fff}
+.btn{font:inherit;background:var(--card);border:1px solid var(--bd);border-radius:4px;padding:8px 14px;cursor:pointer;color:var(--txt)}
+.btn:hover{background:var(--hov)}.btn.pri{background:var(--acc);border-color:var(--acc);color:#fff}:root[data-theme=dark] .btn.pri{color:#10141a}.btn.pri:hover{background:var(--accH)}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.bar{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line)}
+.bar>div{max-width:880px;margin:auto;padding:10px 16px;display:flex;gap:10px;align-items:center;justify-content:space-between}
+.hide{display:none!important}
+details summary{cursor:pointer;font-weight:600}
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line)}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--mut);text-align:left;padding:10px;border-bottom:1px solid var(--line);font-weight:600}
+td{padding:9px 10px;border-bottom:1px solid var(--line)}tr:last-child td{border:0}
+td.n,th.n{text-align:center;width:60px}.pos{width:40px;color:var(--mut);font-variant-numeric:tabular-nums}
+tr.top3 .pos,tr.top3 td:nth-child(2){font-weight:650}
+.sc{display:flex;align-items:center;gap:8px;font-variant-numeric:tabular-nums}.sc span{width:90px;height:6px;background:var(--trk);display:block}.sc i{display:block;height:6px;background:var(--acc)}
+.tag{font-size:11px;color:var(--mut);border:1px solid var(--line);padding:1px 5px;border-radius:3px;margin-left:6px}
+.head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;margin:32px 0 10px}.head h2{margin:0}
+#gate{position:fixed;inset:0;z-index:50;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:16px}
+#gate .panel{max-width:380px;width:100%;margin:0}
+@media(max-width:560px){.g{padding:10px}.seg button{padding:7px 9px}th.n{width:auto}}
+.mini.danger{color:var(--n);border-color:var(--n)}
+</style></head><body>
+<div id="gate" class="hide"><div class="panel"><h1 data-i="gateTitle" style="font-size:20px"></h1><p class="lead" data-i="gateText" style="margin-bottom:14px"></p>
+<input id="pw" type="password" autocomplete="off"><div class="row" style="margin-top:10px"><button class="btn pri" id="pwB" data-i="gateBtn"></button><button class="mini" id="lang2">EN</button></div><p class="err hide" id="pwE"></p></div></div>
+<div class="top"><div><span class="brand" data-i="brand"></span>
+<span class="tabs"><button class="t on" id="tV" data-i="tabV"></button><button class="t" id="tR" data-i="tabR"></button>
+<button class="mini" id="lang">EN</button><button class="mini" id="theme"></button></span></div></div>
+<main>
+<section id="vote">
+<h1 data-i="title"></h1>
+<p class="lead" data-i="lead"></p>
+<div class="panel"><label for="name" data-i="nick"></label><input id="name" autocomplete="off" maxlength="30"><p class="hint" data-i="nickHint"></p></div>
+<details class="panel"><summary data-i="reload"></summary><div style="margin-top:12px"><div class="row"><button class="btn" id="srv" data-i="fromServer"></button></div><p class="hint" data-i="orCode"></p><textarea id="imp"></textarea><div style="margin-top:8px"><button class="btn" id="impB" data-i="reloadBtn"></button></div></div></details>
+<div id="list"></div>
+<h2 data-i="propose"></h2>
+<div class="panel"><div class="row"><input id="cn" style="flex:1 1 200px" maxlength="60"><button class="btn" id="ca" data-i="add"></button></div><p class="hint" data-i="proposeHint"></p></div>
+<div class="panel hide" id="done"><label id="stl"></label><p class="hint" data-i="codeHint"></p><textarea id="code" readonly></textarea><div class="row" style="margin-top:8px"><button class="btn" id="cpC" data-i="copyCode"></button></div></div>
+<div class="bar"><div><span id="prog" class="hint"></span><span class="row"><button class="btn" id="rst" data-i="reset"></button><button class="btn pri" id="gen" data-i="gen"></button></span></div></div>
+</section>
+<section id="res" class="hide">
+<h1 data-i="resTitle"></h1>
+<p class="lead" data-i="resLead"></p>
+<div class="row" style="margin-bottom:12px;align-items:center"><button class="btn pri" id="refresh" data-i="refresh"></button><button class="btn" id="inv" data-i="invite"></button><span class="hint" id="rst2"></span></div>
+<details class="panel"><summary data-i="manual"></summary><div style="margin-top:12px"><textarea id="codes"></textarea>
+<div class="row" style="margin-top:8px;align-items:center"><button class="btn" id="calc" data-i="calc"></button><button class="btn" id="impF" data-i="impFile"></button><input type="file" id="file" accept=".json,application/json" class="hide"></div></div></details>
+<p class="hint" data-i="pts" style="margin-bottom:8px"></p>
+<div id="out"></div></section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL='https://qbhtuvvimymvfwsexvmq.supabase.co';
+const SUPABASE_KEY='sb_publishable_n5WjLT1YcrxWw2K9aKHPFg_hkOmW2XH';
+const POLL=(new URLSearchParams(location.search).get('poll')||'soiree-1').slice(0,40);
+let sb=null;try{sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY)}catch(e){}
+let PASS='';
+const T={
+fr:{del:"Supprimer",delConfirm:n=>"Supprimer « "+n+" » pour tout le monde ?",delErr:"Suppression impossible : ",brand:"Grille de vote",tabV:"Voter",tabR:"Résultats",title:"Soirées jeux multijoueurs",lead:"Indique ton intérêt pour chaque jeu, puis envoie ton vote. Tu peux le modifier quand tu veux.",nick:"Pseudo",nickHint:"Garde le même pseudo pour modifier ton vote plus tard.",nickPh:"Ex : PsickOSSH",reload:"J'ai déjà voté : recharger mon vote",fromServer:"Charger mon vote depuis le serveur",orCode:"Ou colle un ancien code :",impPh:"Code",reloadBtn:"Recharger depuis le code",propose:"Proposer un jeu",gamePh:"Nom du jeu",add:"Ajouter",proposeHint:"Ton jeu apparaît chez tout le monde dans « Propositions du groupe » et est compté « Chaud » pour toi.",codeHint:"Sauvegarde de secours : tu peux envoyer ce code à l'organisateur si le serveur ne répond pas.",copyCode:"Copier le code",reset:"Réinitialiser",gen:"Envoyer mon vote",sending:"Envoi en cours…",sent:"Vote enregistré sur le serveur.",sendErr:"Envoi impossible : ",noServer:"Serveur indisponible. Utilise le code ci-dessous.",resTitle:"Résultats",resLead:"Classement mis à jour depuis les votes envoyés.",refresh:"Actualiser",invite:"Copier le lien d'invitation",invited:"Lien copié. Il contient le mot de passe : ne le partage qu'à tes potes.",manual:"Saisie manuelle / import de fichier",updated:"Mis à jour à ",nofetch:"Impossible de charger les votes : ",codesPh:"Un code par ligne",calc:"Calculer depuis la zone",impFile:"Importer un classement (.json)",expJson:"Exporter (.json)",expCsv:"Exporter (.csv)",impOk:n=>n+" votant(s) importé(s) et ajouté(s) à la liste.",impBad:"Fichier invalide ou sans données de votes.",pts:"Chaud = 2 pts · Si besoin = 1 pt · Sans moi = −1 pt",opts:["Chaud","Si besoin","Sans moi"],custom:"Proposition du groupe",sugg:"Propositions du groupe",answers:n=>n+" réponse(s) enregistrée(s)",needName:"Renseigne ton pseudo.",confirmReset:"Tout effacer sur cet appareil ? (Ton vote déjà envoyé reste sur le serveur.)",bad:"Code invalide",loaded:"Votes rechargés. Modifie-les puis renvoie ton vote.",notFound:"Aucun vote trouvé pour ce pseudo.",none:"Aucun vote pour l'instant.",ranking:"Classement",voters:(n,l)=>n+" votant(s) : "+l,game:"Jeu",score:"Score",proposed:"proposé",cats:["Co-op & Survie","Compétition & Tactique","Party Games & Trahison","Stratégie & Gestion","Autres"],themeL:"Thème : sombre",themeD:"Thème : clair",gateTitle:"Accès réservé",gateText:"Saisis le mot de passe du groupe pour accéder au vote.",gateBtn:"Entrer",gateBad:"Mot de passe incorrect.",gateErr:"Connexion impossible : "},
+en:{del:"Delete",delConfirm:n=>"Delete “"+n+"” for everyone?",delErr:"Could not delete: ",brand:"Voting grid",tabV:"Vote",tabR:"Results",title:"Multiplayer game nights",lead:"Tell us how keen you are on each game, then submit your vote. You can edit it any time.",nick:"Nickname",nickHint:"Keep the same nickname to edit your vote later.",nickPh:"e.g. PsickOSSH",reload:"Already voted? Reload my vote",fromServer:"Load my vote from the server",orCode:"Or paste a previous code:",impPh:"Code",reloadBtn:"Reload from code",propose:"Suggest a game",gamePh:"Game name",add:"Add",proposeHint:"Your game shows up for everyone under “Group suggestions” and counts as “Hot” for you.",codeHint:"Backup: you can send this code to the organizer if the server is unreachable.",copyCode:"Copy code",reset:"Reset",gen:"Submit my vote",sending:"Sending…",sent:"Vote saved on the server.",sendErr:"Could not send: ",noServer:"Server unavailable. Use the code below.",resTitle:"Results",resLead:"Ranking updated from the votes submitted.",refresh:"Refresh",invite:"Copy invitation link",invited:"Link copied. It contains the password: only share it with your friends.",manual:"Manual entry / file import",updated:"Updated at ",nofetch:"Could not load votes: ",codesPh:"One code per line",calc:"Compute from box",impFile:"Import a ranking (.json)",expJson:"Export (.json)",expCsv:"Export (.csv)",impOk:n=>n+" voter(s) imported and added to the list.",impBad:"Invalid file or no vote data.",pts:"Hot = 2 pts · If needed = 1 pt · Not for me = −1 pt",opts:["Hot","If needed","Not for me"],custom:"Group suggestion",sugg:"Group suggestions",answers:n=>n+" answer(s) saved",needName:"Please enter your nickname.",confirmReset:"Erase everything on this device? (Your vote already sent stays on the server.)",bad:"Invalid code",loaded:"Votes reloaded. Edit them, then submit again.",notFound:"No vote found for this nickname.",none:"No votes yet.",ranking:"Ranking",voters:(n,l)=>n+" voter(s): "+l,game:"Game",score:"Score",proposed:"suggested",cats:["Co-op & Survival","Competitive & Tactical","Party Games & Betrayal","Strategy & Management","Other"],themeL:"Theme: dark",themeD:"Theme: light",gateTitle:"Private access",gateText:"Enter the group password to access the vote.",gateBtn:"Enter",gateBad:"Wrong password.",gateErr:"Connection failed: "}
+};
+const CATS=[
+[["Peak","Jeu de grimpe et de survie en montagne ultra-chaotique et viral.","Chaotic, viral mountain climbing and survival game."],["Terraria","Aventure, boss épiques et craft en sandbox 2D ultra-complet.","Adventure, epic bosses and crafting in a huge 2D sandbox."],["Valheim","Survie et exploration viking dans un monde généré procéduralement.","Viking survival and exploration in a procedurally generated world."],["Palworld","Survie avec des armes à feu et des créatures à capturer et faire travailler.","Survival with guns and creatures to catch and put to work."],["Minecraft","Le bac à sable ultime pour construire, miner et survivre ensemble.","The ultimate sandbox to build, mine and survive together."],["Helldivers 2","Shooter frénétique où l'on propage la démocratie (et le tir allié).","Frantic shooter spreading democracy (and friendly fire)."],["Split Fiction","Le dernier chef-d'œuvre coopératif des créateurs d'It Takes Two.","The latest co-op masterpiece from the makers of It Takes Two."],["It Takes Two","L'aventure coopérative obligatoire et ultra-variée à 2 joueurs.","The must-play, endlessly varied 2-player co-op adventure."],["Enshrouded","Action-RPG et survie dans un royaume déchu envahi par la brume.","Action RPG and survival in a fallen kingdom swallowed by fog."],["Sea of Thieves","Devenez pirates, naviguez et pillez des trésors à plusieurs.","Become pirates, sail and plunder treasure together."],["Lethal Company","Récupération de ferraille sur des lunes industrielles flippantes.","Scrap hunting on creepy industrial moons."],["Sons of the Forest / The Forest","Survie sur une île de cannibales et de mutants terrifiants.","Survive on an island of cannibals and terrifying mutants."],["Deep Rock Galactic","Nains de l'espace, minage, bière et vagues d'insectes aliens.","Space dwarves, mining, beer and waves of alien bugs."],["Monster Hunter Wilds/World","Chasse de monstres géants en monde ouvert ultra-immersif.","Giant monster hunting in an immersive open world."],["Warhammer 40,000: Space Marine 2","Défouraillage de hordes de Tyranides ultra-brutal à 3 joueurs.","Brutal 3-player shooting of Tyranid hordes."]],
+[["Counter-Strike 2","Le FPS tactique de référence : pose de bombe et skill pur.","The reference tactical FPS: bomb planting and pure skill."],["Valorant","FPS tactique alliant précision de tir et pouvoirs de héros.","Tactical FPS mixing precise shooting and hero abilities."],["Rainbow Six Siege","Assauts tactiques en intérieur avec lignes de tir millimétrées.","Indoor tactical assaults with razor-precise lines of fire."],["League of Legends","Le MOBA incontournable pour tester les nerfs du groupe.","The essential MOBA to test the group's nerves."],["Call of Duty","Le battle royale militaire nerveux à grande échelle.","Fast-paced large-scale military battle royale."],["Fortnite","Battle royale incontournable avec ou sans construction.","The go-to battle royale, with or without building."],["Apex Legends","Battle royale frénétique basé sur le mouvement et les héros.","Frantic battle royale built on movement and heroes."],["Overwatch","Combats en équipe 5v5 dynamiques avec objectifs et rôles définis.","Dynamic 5v5 team fights with objectives and set roles."],["Marvel Rivals","Hero shooter en équipe gratuit avec les personnages Marvel.","Free team hero shooter with Marvel characters."],["The Finals","Shooter en arène ultra-nerveux avec destruction totale du décor.","Fast arena shooter with fully destructible environments."],["Rocket League","Du football avec des voitures fusées ultra-compétitif.","Ultra-competitive football with rocket cars."],["Trackmania","Course contre-la-montre pure sur des circuits vertigineux.","Pure time-attack racing on dizzying tracks."],["Chivalry 2","Grandes batailles médiévales sanglantes et hilarantes à 64 joueurs.","Bloody, hilarious 64-player medieval battles."],["Street Fighter / Tekken / Mortal Kombat","Pour régler ses comptes un contre un lors de tournois maison.","Settle scores one-on-one in home tournaments."]],
+[["Among Us","Démasquez les imposteurs avant qu'ils ne tuent tout l'équipage.","Unmask the impostors before they kill the whole crew."],["Dead by Daylight","4 survivants tentent de fuir un tueur impitoyable géré par un joueur.","4 survivors try to escape a ruthless killer played by a human."],["Garry's Mod","Modes PropHunt (cache-cache objets) ou TTT (traîtres cachés).","PropHunt (hide as objects) or TTT (hidden traitors) modes."],["Pummel Party","Un Mario-party like sur PC, mais sanglant et armé.","A Mario Party-like on PC, but bloody and armed."],["Overcooked! 2 / All You Can Eat","Coop de cuisine infernale et stressante qui brise des amitiés.","Hellish, stressful cooking co-op that breaks friendships."],["Fall Guys","Course d'obstacles loufoque en Battle Royale géant.","Wacky obstacle-course giant battle royale."],["Gang Beasts","Combats de bonshommes désarticulés pour s'éjecter du décor.","Floppy brawlers trying to throw each other off the map."],["Chained Together","Enchaînés les uns aux autres, grimpez sans tomber des enfers.","Chained to each other, climb out of hell without falling."],["Content Warning","Filmez des monstres effrayants avec vos potes pour faire des vues.","Film scary monsters with friends to go viral."],["Phasmophobia","Chasse aux fantômes immersive en coop à 4 avec micro actif.","Immersive 4-player co-op ghost hunting with proximity voice."],["Jackbox Party Packs","Jeux de société interactifs jouables directement avec vos téléphones.","Interactive party games played right on your phones."],["Golf With Your Friends","Mini-golf chaotique jusqu'à 12 joueurs avec collisions activées.","Chaotic mini-golf for up to 12 players with collisions on."]],
+[["Factorio","Automatisez des usines géantes à plusieurs pour lancer une fusée.","Automate giant factories together to launch a rocket."],["Anno 1800","Gestion et construction de cités industrielles en coopération.","Co-op city building and industrial management."],["Hearts of Iron IV","Grande stratégie militaire ultra-complexe durant la 2nde GM.","Ultra-complex WWII grand strategy."],["Civilization VI / VII","Bâtissez un empire tour par tour pour des sessions de 10h.","Build a turn-based empire in 10-hour sessions."],["Crusader Kings III","Gérez votre dynastie médiévale, complotez et trahissez vos potes.","Run your medieval dynasty, scheme and betray your friends."],["Age of Empires II / IV","Stratégie en temps réel historique : gestion de ressources et armées.","Historical real-time strategy: resources and armies."],["Total War: Warhammer III","Campagnes massives en coopératif et batailles tactiques épiques.","Massive co-op campaigns and epic tactical battles."],["Slay the Spire 2","Le mythique roguelike de deckbuilding jouable en coop.","The legendary deckbuilding roguelike, playable in co-op."],["Stardew Valley","Gérez une ferme à plusieurs de façon ultra détendue (jusqu'à 8).","Run a farm together, very relaxed (up to 8 players)."],["PlateUp!","Mélange entre gestion de restaurant de type roguelite et cuisine.","Roguelite restaurant management mixed with cooking."],["Forza Horizon","Balades et courses automobiles dans les magnifiques décors du Mexique.","Driving and racing through gorgeous Mexican scenery."]],
+[["Worms","Artillerie au tour par tour, classique et hilarant.","Classic, hilarious turn-based artillery."],["Prison Life 2","",""],["Retroachievements","Duel de succès avec RA-Companion.","Achievement duel with RA-Companion."],["Hollow Knight / Silksong","",""],["R.E.P.O.","Coop d'extraction d'objets et de panique.","Panicky object-extraction co-op."],["Who's Who 2.0","",""],["Mario Kart","",""],["Mario Party","",""],["Web games","",""],["Roblox","",""],["Fishing Planet","",""],["Super Smash Bros / MultiVersus / Brawlhalla","",""],["Archipelago","Randomizer multi-jeux collaboratif.","Collaborative multi-game randomizer."],["Fart Together","",""]]
+];
+const GAMES=[];CATS.forEach((l,ci)=>l.forEach(([n,fr,en])=>GAMES.push({n,fr,en,ci})));
+const PTS=[2,1,-1];
+let lang=localStorage.getItem('lang')||((navigator.language||'fr').startsWith('fr')?'fr':'en');
+let theme=localStorage.getItem('theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+let votes=JSON.parse(localStorage.getItem('v2')||'{}'),custom=JSON.parse(localStorage.getItem('c2')||'[]'),shared=[];
+let LAST=null;
+const lc=s=>String(s).toLowerCase();let removed=[];
+const $=id=>document.getElementById(id),t=()=>T[lang];
+const extras=()=>{const s=new Set(),o=[];[...shared,...custom].forEach(n=>{const k=n.toLowerCase();if(!s.has(k)&&!removed.includes(k)){s.add(k);o.push(n)}});return o};
+const isAuthErr=e=>e&&/bad passphrase/i.test(e.message||'');
+function lock(msg){PASS='';localStorage.removeItem('pass:'+POLL);$('gate').classList.remove('hide');if(msg){$('pwE').textContent=msg;$('pwE').classList.remove('hide')}}
+function save(){localStorage.setItem('v2',JSON.stringify(votes));localStorage.setItem('c2',JSON.stringify(custom));prog()}
+function row(key,n,d,del){const el=document.createElement('div');el.className='g';
+el.innerHTML='<div class="i"><b></b><small></small></div><div class="seg"></div>';
+el.querySelector('b').textContent=n;const s=el.querySelector('small');if(d)s.textContent=d;else s.remove();
+const o=el.querySelector('.seg');t().opts.forEach((l,i)=>{const b=document.createElement('button');b.className='a'+i+(votes[key]===i?' on':'');b.textContent=l;
+b.onclick=()=>{if(votes[key]===i)delete votes[key];else votes[key]=i;[...o.children].forEach((x,j)=>x.classList.toggle('on',votes[key]===j));save()};o.appendChild(b)});if(del){const x=document.createElement('button');x.className='mini danger';x.textContent=t().del;x.onclick=()=>delProposal(n);el.appendChild(x)}return el}
+function render(){const L=$('list');L.innerHTML='';let cur=-1,box=null;GAMES.forEach((g,i)=>{if(g.ci!==cur){cur=g.ci;const h=document.createElement('h2');h.textContent=t().cats[cur];L.appendChild(h);box=document.createElement('div');box.className='list';L.appendChild(box)}box.appendChild(row('g'+i,g.n,g[lang]))});
+const X=extras();if(X.length){const h=document.createElement('h2');h.textContent=t().sugg;L.appendChild(h);const b=document.createElement('div');b.className='list';L.appendChild(b);X.forEach(n=>b.appendChild(row('x:'+n,n,t().custom,true)))}prog()}
+function prog(){$('prog').textContent=t().answers(Object.keys(votes).length)}
+function applyUI(){document.documentElement.lang=lang;document.documentElement.dataset.theme=theme;
+document.querySelectorAll('[data-i]').forEach(e=>e.textContent=t()[e.dataset.i]);
+$('name').placeholder=t().nickPh;$('imp').placeholder=t().impPh;$('cn').placeholder=t().gamePh;$('codes').placeholder=t().codesPh;
+const L=lang==='fr'?'EN':'FR';$('lang').textContent=L;$('lang2').textContent=L;$('theme').textContent=theme==='dark'?t().themeD:t().themeL;
+document.title=t().brand;render();if(LAST)calc()}
+const toggleLang=()=>{lang=lang==='fr'?'en':'fr';localStorage.setItem('lang',lang);applyUI()};
+$('lang').onclick=toggleLang;$('lang2').onclick=toggleLang;
+$('theme').onclick=()=>{theme=theme==='dark'?'light':'dark';localStorage.setItem('theme',theme);applyUI()};
+async function fetchRemoved(){if(!sb||!PASS)return;try{const {data,error}=await sb.rpc('get_vote',{p_poll:POLL,p_pass:PASS,p_name:'__removed__'});if(!error&&data&&Array.isArray(data.removed))removed=data.removed.map(lc)}catch(e){}}
+async function setRemoved(fn){if(!sb||!PASS)return{error:{message:'offline'}};
+const cur=await sb.rpc('get_vote',{p_poll:POLL,p_pass:PASS,p_name:'__removed__'});
+if(isAuthErr(cur.error)){lock(t().gateBad);return{error:cur.error}}
+const list=(cur.data&&Array.isArray(cur.data.removed))?cur.data.removed.map(lc):[];
+const next=fn(list);
+const r=await sb.rpc('submit_vote',{p_poll:POLL,p_pass:PASS,p_name:'__removed__',p_data:{n:'__removed__',v:'',c:[],removed:next}});
+if(isAuthErr(r.error)){lock(t().gateBad);return r}
+if(!r.error)removed=next;return r}
+async function delProposal(n){if(!confirm(t().delConfirm(n)))return;const k=lc(n);
+const {error}=await setRemoved(l=>l.includes(k)?l:[...l,k]);if(error){alert(t().delErr+error.message);return}
+custom=custom.filter(x=>lc(x)!==k);Object.keys(votes).forEach(kk=>{if(kk.startsWith('x:')&&lc(kk.slice(2))===k)delete votes[kk]});save();render()}
+async function fetchShared(){if(!sb||!PASS)return;try{const {data,error}=await sb.rpc('get_proposals',{p_poll:POLL,p_pass:PASS});if(isAuthErr(error)){lock(t().gateBad);return}if(!error&&data){shared=data}await fetchRemoved();render()}catch(e){}}
+$('ca').onclick=async()=>{const v=$('cn').value.trim().slice(0,60);if(!v)return;$('cn').value='';
+if(sb&&PASS&&removed.includes(lc(v))){await setRemoved(l=>l.filter(x=>x!==lc(v)))}
+if(!extras().some(n=>n.toLowerCase()===v.toLowerCase()))custom.push(v);
+const real=extras().find(n=>n.toLowerCase()===v.toLowerCase())||v;votes['x:'+real]=0;save();render();
+if(sb&&PASS){try{const {error}=await sb.rpc('add_proposal',{p_poll:POLL,p_pass:PASS,p_name:v});if(isAuthErr(error))lock(t().gateBad)}catch(e){}}};
+$('name').value=localStorage.getItem('nm')||'';$('name').oninput=e=>localStorage.setItem('nm',e.target.value);
+function enc(o){return btoa(unescape(encodeURIComponent(JSON.stringify(o))))}
+function dec(s){return JSON.parse(decodeURIComponent(escape(atob(s))))}
+function mkObj(){const v=GAMES.map((g,i)=>votes['g'+i]===undefined?'-':votes['g'+i]).join('');
+return {n:$('name').value.trim().slice(0,30)||'Anonyme',v,c:extras().map(n=>[n,votes['x:'+n]===undefined?-1:votes['x:'+n]])}}
+$('gen').onclick=async()=>{if(!$('name').value.trim()){alert(t().needName);$('name').focus();return}
+const o=mkObj();$('code').value=enc(o);$('done').classList.remove('hide');$('stl').textContent=t().sending;$('done').scrollIntoView({behavior:'smooth'});
+if(!sb){$('stl').textContent=t().noServer;return}
+try{const {error}=await sb.rpc('submit_vote',{p_poll:POLL,p_pass:PASS,p_name:o.n,p_data:o});
+if(isAuthErr(error)){lock(t().gateBad);return}
+$('stl').textContent=error?t().sendErr+error.message+' — '+t().noServer:t().sent}catch(e){$('stl').textContent=t().sendErr+e.message}};
+$('cpC').onclick=()=>navigator.clipboard.writeText($('code').value);
+$('inv').onclick=()=>{navigator.clipboard.writeText(location.origin+location.pathname+'?poll='+encodeURIComponent(POLL)+'#k='+encodeURIComponent(PASS));alert(t().invited)};
+$('rst').onclick=()=>{if(confirm(t().confirmReset)){votes={};custom=[];save();render()}};
+function loadObj(o){votes={};(o.v||'').split('').forEach((ch,i)=>{if(ch!=='-')votes['g'+i]=+ch});(o.c||[]).forEach(([n,k])=>{if(!extras().some(x=>x.toLowerCase()===n.toLowerCase()))custom.push(n);const real=extras().find(x=>x.toLowerCase()===n.toLowerCase())||n;if(k>=0)votes['x:'+real]=k});
+$('name').value=o.n;localStorage.setItem('nm',o.n);save();render()}
+$('impB').onclick=()=>{try{loadObj(dec($('imp').value.trim()));alert(t().loaded)}catch(e){alert(t().bad)}};
+$('srv').onclick=async()=>{const n=$('name').value.trim();if(!n){alert(t().needName);$('name').focus();return}
+if(!sb){alert(t().noServer);return}
+const {data,error}=await sb.rpc('get_vote',{p_poll:POLL,p_pass:PASS,p_name:n});
+if(isAuthErr(error)){lock(t().gateBad);return}
+if(error){alert(t().nofetch+error.message);return}if(!data){alert(t().notFound);return}loadObj(data);alert(t().loaded)};
+function show(r){$('vote').classList.toggle('hide',r);$('res').classList.toggle('hide',!r);$('tV').classList.toggle('on',!r);$('tR').classList.toggle('on',r);window.scrollTo(0,0);if(r)loadAll()}
+$('tV').onclick=()=>show(false);$('tR').onclick=()=>show(true);
+async function loadAll(){if(!sb){$('rst2').textContent=t().noServer;return}
+$('rst2').textContent='…';
+const {data,error}=await sb.rpc('get_votes',{p_poll:POLL,p_pass:PASS});
+if(isAuthErr(error)){lock(t().gateBad);return}
+if(error){$('rst2').textContent=t().nofetch+error.message;return}
+const rm=(data||[]).find(d=>d&&d.n==='__removed__');if(rm&&Array.isArray(rm.removed))removed=rm.removed.map(lc);
+$('codes').value=(data||[]).map(enc).join('\n');calc();$('rst2').textContent=t().updated+new Date().toLocaleTimeString()}
+$('refresh').onclick=()=>{fetchShared();loadAll()};
+function parse(s){return s.split(/\s+/).filter(Boolean).map(x=>{try{return dec(x)}catch(e){return null}}).filter(x=>x&&x.n&&x.n!=='__removed__')}
+function dl(name,mime,txt){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([txt],{type:mime}));a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+const stamp=()=>new Date().toISOString().slice(0,10);
+function expJson(){if(!LAST)return;dl('classement-'+stamp()+'.json','application/json',JSON.stringify({app:'game-night-vote',version:1,exported:new Date().toISOString(),voters:LAST.P,ranking:LAST.R.map((e,i)=>({rank:i+1,game:e.n,score:e.s,hot:e.c[0],ifNeeded:e.c[1],notForMe:e.c[2],suggested:!!e.custom}))},null,2))}
+function expCsv(){if(!LAST)return;const q=s=>'"'+String(s).replace(/"/g,'""')+'"',o=t().opts;
+const L=[['#',t().game,t().score,o[0],o[1],o[2]].map(q).join(';')];
+LAST.R.forEach((e,i)=>L.push([i+1,q(e.n),e.s,e.c[0],e.c[1],e.c[2]].join(';')));
+dl('classement-'+stamp()+'.csv','text/csv;charset=utf-8','\ufeff'+L.join('\r\n'))}
+$('impF').onclick=()=>$('file').click();
+$('file').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();
+r.onload=()=>{try{const d=JSON.parse(r.result);if(d.app!=='game-night-vote'||!Array.isArray(d.voters)||!d.voters.length)throw 0;
+const add=d.voters.map(enc).join('\n'),cur=$('codes').value.trim();$('codes').value=(cur?cur+'\n':'')+add;calc();alert(t().impOk(d.voters.length))}catch(x){alert(t().impBad)}};
+r.readAsText(f);e.target.value=''};
+function calc(){const D=new Map();parse($('codes').value).forEach(x=>D.set(x.n.toLowerCase(),x));const P=[...D.values()];
+if(!P.length){LAST=null;$('out').innerHTML='<div class="panel">'+t().none+'</div>';return}
+const m={};const add=n=>{const k=n.toLowerCase();return m[k]=m[k]||{n,s:0,c:[0,0,0],v:0}};
+GAMES.forEach(g=>add(g.n));
+P.forEach(p=>{(p.v||'').split('').forEach((ch,i)=>{if(ch==='-'||!GAMES[i])return;const e=add(GAMES[i].n),k=+ch;e.c[k]++;e.s+=PTS[k];e.v++});
+(p.c||[]).forEach(([n,k])=>{if(removed.includes(lc(n)))return;const e=add(n);e.custom=1;if(k>=0){e.c[k]++;e.s+=PTS[k];e.v++}})});
+const R=Object.values(m).filter(e=>e.v>0||e.custom).sort((a,b)=>b.s-a.s||a.c[2]-b.c[2]||b.c[0]-a.c[0]||a.n.localeCompare(b.n));
+LAST={P,R};
+const max=Math.max(1,...R.map(e=>e.s)),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])),o=t().opts;
+let h=`<div class="head"><h2>${t().ranking}</h2><span class="row"><button class="btn" id="xj">${t().expJson}</button><button class="btn" id="xc">${t().expCsv}</button></span></div><p class="hint" style="margin:0 0 10px">${esc(t().voters(P.length,P.map(p=>p.n).join(', ')))}</p><table><tr><th>#</th><th>${t().game}</th><th>${t().score}</th><th class="n">${o[0]}</th><th class="n">${o[1]}</th><th class="n">${o[2]}</th></tr>`;
+R.forEach((e,i)=>{h+=`<tr class="${i<3?'top3':''}"><td class="pos">${i+1}</td><td>${esc(e.n)}${e.custom?'<span class="tag">'+t().proposed+'</span>':''}</td><td><div class="sc"><span><i style="width:${Math.max(0,e.s)/max*100}%"></i></span>${e.s}</div></td><td class="n">${e.c[0]}</td><td class="n">${e.c[1]}</td><td class="n">${e.c[2]}</td></tr>`});
+$('out').innerHTML=h+'</table>';$('xj').onclick=expJson;$('xc').onclick=expCsv}
+$('calc').onclick=calc;
+async function tryPass(p){if(!sb){return true}
+const {error}=await sb.rpc('get_proposals',{p_poll:POLL,p_pass:p});
+if(!error)return true;if(isAuthErr(error))return false;throw error}
+async function unlock(p,fromUser){
+try{if(await tryPass(p)){PASS=p;localStorage.setItem('pass:'+POLL,p);$('gate').classList.add('hide');$('pwE').classList.add('hide');$('pw').value='';fetchShared();return}
+if(fromUser||true){$('pwE').textContent=t().gateBad;$('pwE').classList.remove('hide')}localStorage.removeItem('pass:'+POLL);$('gate').classList.remove('hide')}
+catch(e){$('pwE').textContent=t().gateErr+(e.message||e);$('pwE').classList.remove('hide');$('gate').classList.remove('hide')}}
+$('pwB').onclick=()=>{const p=$('pw').value;if(p)unlock(p,true)};
+$('pw').onkeydown=e=>{if(e.key==='Enter')$('pwB').click()};
+applyUI();
+(function init(){
+const m=location.hash.match(/[#&]k=([^&]*)/);let p=m?decodeURIComponent(m[1]):'';
+if(m)history.replaceState(null,'',location.pathname+location.search);
+p=p||localStorage.getItem('pass:'+POLL)||'';
+if(!sb){return}
+if(p)unlock(p,false);else $('gate').classList.remove('hide')})();
+</script></body></html>
