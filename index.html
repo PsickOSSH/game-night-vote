@@ -197,9 +197,11 @@ P.forEach(p=>{(p.v||'').split('').forEach((ch,i)=>{if(ch==='-'||!GAMES[i])return
 const R=Object.values(m).filter(e=>e.v>0||e.custom).sort((a,b)=>b.s-a.s||a.c[2]-b.c[2]||b.c[0]-a.c[0]||a.n.localeCompare(b.n));
 LAST={P,R};
 const max=Math.max(1,...R.map(e=>e.s)),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])),o=t().opts;
-let h=`<div class="head"><h2>${t().ranking}</h2><span class="row"><button class="btn" id="xj">${t().expJson}</button><button class="btn" id="xc">${t().expCsv}</button></span></div><p class="hint" style="margin:0 0 10px">${esc(t().voters(P.length,P.map(p=>p.n).join(', ')))}</p><table><tr><th>#</th><th>${t().game}</th><th>${t().score}</th><th class="n">${o[0]}</th><th class="n">${o[1]}</th><th class="n">${o[2]}</th></tr>`;
+let h=`<div class="head"><h2>${t().ranking}</h2><span class="row"><button class="btn" id="xj">${t().expJson}</button><button class="btn" id="xc">${t().expCsv}</button></span></div><p class="hint" style="margin:0 0 6px">${esc(t().voters(P.length,''))}</p><div class="row" style="margin:0 0 10px;gap:6px;flex-wrap:wrap">${P.map(p=>`<span class="tag" style="display:inline-flex;align-items:center;gap:6px;padding:4px 8px">${esc(p.n)}<button class="mini danger" data-rm="${esc(p.n.toLowerCase())}" title="${esc(t().del)}">✕</button></span>`).join('')}</div><table><tr><th>#</th><th>${t().game}</th><th>${t().score}</th><th class="n">${o[0]}</th><th class="n">${o[1]}</th><th class="n">${o[2]}</th></tr>`;
 R.forEach((e,i)=>{h+=`<tr class="${i<3?'top3':''}"><td class="pos">${i+1}</td><td>${esc(e.n)}${e.custom?'<span class="tag">'+t().proposed+'</span>':''}</td><td><div class="sc"><span><i style="width:${Math.max(0,e.s)/max*100}%"></i></span>${e.s}</div></td><td class="n">${e.c[0]}</td><td class="n">${e.c[1]}</td><td class="n">${e.c[2]}</td></tr>`});
-$('out').innerHTML=h+'</table>';$('xj').onclick=expJson;$('xc').onclick=expCsv}
+$('out').innerHTML=h+'</table>';$('xj').onclick=expJson;$('xc').onclick=expCsv;
+document.querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{const k=b.dataset.rm;
+$('codes').value=$('codes').value.split(/\s+/).filter(Boolean).filter(x=>{try{return dec(x).n.toLowerCase()!==k}catch(e){return true}}).join('\n');calc()})}
 $('calc').onclick=calc;
 async function tryPass(p){if(!sb){return true}
 const {error}=await sb.rpc('get_proposals',{p_poll:POLL,p_pass:p});
